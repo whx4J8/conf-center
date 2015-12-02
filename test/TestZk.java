@@ -12,15 +12,17 @@ public class TestZk {
     public static void main(String[] args) throws IOException, InterruptedException, KeeperException {
 
         ZooKeeper zk = connect();
-        update(zk,"/zoo2","message22");
+        update(zk,"/zoo1","adsff");
+        //create(zk,"/zoo1");
+//        update(zk,"/zoo2","adfs");
 
 //        create(zk,"/zoo2");
 
-//        List<String> list = getChilden("/zoo2",zk);
+//        List<String> list = getChilden("/",zk);
 //        for(String path:list){
 //            System.out.println(path);
 //            //delete(zk,"/zoo2/"+ path);
-//        }g
+//        }
 //
 //
 //        delete(zk,"/zoo2");
@@ -85,7 +87,7 @@ public class TestZk {
 
     public static void update(ZooKeeper zkClient,String path,String data) throws KeeperException, InterruptedException {
         System.out.println("修改节点数据");
-        zkClient.setData("/zoo2", data.getBytes(), -1);
+        zkClient.setData(path, data.getBytes(), -1);
 
     }
 

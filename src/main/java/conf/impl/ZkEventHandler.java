@@ -15,7 +15,7 @@ import org.apache.zookeeper.ZooKeeper;
 public class ZkEventHandler {
 
     /**
-     * zk客户端
+     * zk客户端链接
      */
     private ZooKeeper zooKeeper = null;
 
@@ -54,6 +54,7 @@ public class ZkEventHandler {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
     }
 
     public ZkEventHandler(String path, Watcher watcher,ZooKeeper zooKeeper) {
