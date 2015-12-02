@@ -27,9 +27,10 @@ public class ConfWorker implements InitializingBean{
 
 Test包下有测试代码，使用测试代码，可以看到回调借口执行情况
 
-public static void main(String[] args){
-    ZooKeeper zk = connect();
-    update(zk,"/zoo1","test");//更新节点上的数据,测试回调
+public static void main(String[] args) throws IOException, InterruptedException, KeeperException {
+
+        ZooKeeper zk = connect();
+        update(zk,"/zoo1","test");
 }
 
 
