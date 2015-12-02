@@ -1,5 +1,6 @@
 # conf-center
-使用zookeeper做的配置数据中心，将配置的信息通知到各个服务中\n
+使用zookeeper做的配置数据中心，将配置的信息通知到各个服务中
+
 每个客户端维持一个Zookeeper的链接，并对多个事件进行监听
 
 @Component
