@@ -12,7 +12,9 @@ public class TestZk {
     public static void main(String[] args) throws IOException, InterruptedException, KeeperException {
 
         ZooKeeper zk = connect();
-        update(zk,"/zoo1","adsff");
+        update(zk,"/zoo1","ads22f1f");
+
+        update(zk,"/zoo2","asdfadsf");
         //create(zk,"/zoo1");
 //        update(zk,"/zoo2","adfs");
 

@@ -1,7 +1,7 @@
 package compent;
 
-import conf.impl.ZkClient;
-import org.apache.zookeeper.Watcher;
+import conf.ConfClient;
+import conf.impl.ConfFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
@@ -11,28 +11,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class ConfWorker implements InitializingBean{
 
-    private ZkClient zkClient = null;
+
+    private ConfClient confClient = null;
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        zkClient = new ZkClient("127.0.0.1", "2181");
 
-        zkClient.handleNodeData("/zoo2", event -> {
-            if (event.getType().equals(Watcher.Event.EventType.NodeDataChanged)) {
-                String path = event.getPath();
-                String message = zkClient.get(path);
+        confClient = ConfFactory.getClient("127.0.0.1","2181");
 
-                System.out.println("get message from conf-center , path " + path + " message : " + message);
-            }
-        });
+        confClient.handleNodeData("/zoo2", (path, message) ->
+            System.out.println("get message from conf-center , path " + path + " message : " + message)
+        );
 
-        zkClient.handleNodeData("/zoo1",event -> {
-            if(event.getType().equals(Watcher.Event.EventType.NodeDataChanged)){
-                String path = event.getPath();
-                String message = event.getPath();
-                System.out.println("get message from conf-center , path " + path + " message : " + message);
-            }
-        });
+        confClient.handleNodeData("/zoo1",(path, message) ->
+                System.out.println("get message from conf-center , path " + path + " message : " + message)
+        );
 
     }
 

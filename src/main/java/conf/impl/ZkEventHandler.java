@@ -32,7 +32,7 @@ public class ZkEventHandler {
         @Override
         public void process(WatchedEvent event) {
             watcher.process(event);
-            registerExists(this, zooKeeper);
+            registerExists(this, zooKeeper);//watcher一次有效性,使用完重新注册
         }
     };
 
@@ -42,7 +42,8 @@ public class ZkEventHandler {
     private Watcher watcher = null;
 
     /**
-     * watcher一次有效性,使用完重新注册
+     * 注册监听服务,即回调函数
+     *
      * @param watcher
      * @param zk
      */

@@ -33,7 +33,7 @@ public class ZkClient implements ConfClient{
      * 注册节点消息变化
      * @param path
      */
-    public void handleNodeData(String path,Watcher watcher){
+    private void handleNodeData(String path,Watcher watcher){
         ZkEventHandler handler = new ZkEventHandler(path,watcher,zooKeeper);
         eventHandlers.add(handler);
     }
@@ -85,5 +85,17 @@ public class ZkClient implements ConfClient{
         return new String(data);
     }
 
+
+    @Override
+    public void handleNodeData(String node, conf.Watcher watcher) {
+        handleNodeData(node, event -> {
+            if (event.getType().equals(Watcher.Event.EventType.NodeDataChanged)) {
+                String path = event.getPath();
+                String message = this.get(path);
+
+                watcher.process(path,message);
+            }
+        });
+    }
 
 }
