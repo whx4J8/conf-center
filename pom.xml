@@ -9,9 +9,12 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>conf-center</groupId>
     <artifactId>conf-center</artifactId>
-    <packaging>war</packaging>
+    <packaging>pom</packaging>
     <name>conf-center Maven Webapp</name>
     <url>http://maven.apache.org</url>
+    <modules>
+        <module>../base-know</module>
+    </modules>
     <dependencies>
 
         <dependency>

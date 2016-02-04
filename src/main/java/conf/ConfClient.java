@@ -6,4 +6,5 @@ package conf;
 public interface ConfClient {
     
     void handleNodeData(String node,Watcher watcher);
+    
 }

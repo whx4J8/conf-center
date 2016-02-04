@@ -1,7 +1,8 @@
 package compent;
 
 import conf.ConfClient;
-import conf.impl.ConfFactory;
+import conf.Watcher;
+import conf.impl.ZkFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
@@ -11,13 +12,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class ConfWorker implements InitializingBean{
 
-
     private ConfClient confClient = null;
 
     @Override
     public void afterPropertiesSet() throws Exception {
 
-        confClient = ConfFactory.getClient("127.0.0.1","2181");
+        confClient = ZkFactory.getConfClient("127.0.0.1", "2181");
 
         confClient.handleNodeData("/zoo2", (path, message) ->
             System.out.println("get message from conf-center , path " + path + " message : " + message)
@@ -26,6 +26,15 @@ public class ConfWorker implements InitializingBean{
         confClient.handleNodeData("/zoo1",(path, message) ->
                 System.out.println("get message from conf-center , path " + path + " message : " + message)
         );
+
+        Watcher watcher = new Watcher() {
+            @Override
+            public void process(String path, String message) {
+                System.out.println("get message from conf-center , path " + path + " message : " + message);
+            }
+        };
+
+        confClient.handleNodeData("/zoo3", watcher);
 
     }
 

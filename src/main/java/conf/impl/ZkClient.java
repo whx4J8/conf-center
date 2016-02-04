@@ -1,6 +1,8 @@
 package conf.impl;
 
 import conf.ConfClient;
+import conf.DistributedLock;
+import conf.LockClient;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
@@ -13,7 +15,7 @@ import java.util.concurrent.CountDownLatch;
 /**
  * Created by wanghongxing on 15/11/30.
  */
-public class ZkClient implements ConfClient{
+public class ZkClient implements ConfClient, LockClient{
 
     /**
      * 一个client持有一个zookeeper客户端
@@ -24,6 +26,12 @@ public class ZkClient implements ConfClient{
      * 持有消息回调list
      */
     private List<ZkEventHandler> eventHandlers = new ArrayList<>();
+
+    /**
+     * 分布式锁
+     */
+    private DistributedLock lock = null;
+
 
     public ZkClient(String ip,String port) {
         zooKeeper = initZookeeper(ip,port);
@@ -85,7 +93,6 @@ public class ZkClient implements ConfClient{
         return new String(data);
     }
 
-
     @Override
     public void handleNodeData(String node, conf.Watcher watcher) {
         handleNodeData(node, event -> {
@@ -96,6 +103,17 @@ public class ZkClient implements ConfClient{
                 watcher.process(path,message);
             }
         });
+
     }
 
+    @Override
+    public void lock(String path) {
+        lock = new DistributedLockImp(zooKeeper,path);
+        lock.lock();
+    }
+
+    @Override
+    public void unLock(String path) {
+        lock.unLock();
+    }
 }
